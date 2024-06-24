@@ -1,0 +1,20 @@
+{# @chat_templates: strip_whitespace #}
+{% set valid_roles = {'system': true, 'user': true, 'assistant': true} %}
+{% macro role_header(role) %}
+    {% if role not in valid_roles %}
+        {{ raise_exception('Message role must be "system", "user", or "assistant", got "%s"'|format(role)) }}
+    {% endif %}
+    {{ '<|' + role + '|>\n' }}
+{% endmacro %}
+{% for message in messages %}
+    {{ role_header(message['role']) }}
+    {{ message['content'].strip() + eos_token }}
+    {{ '' if loop.last else '\n' }}
+{% endfor %}
+{% if add_generation_prompt %}
+    {% if messages[-1]['role'] == 'assistant' %}
+        {{ raise_exception('Requested add_generation_prompt but "assistant" is last role.') }}
+    {% endif %}
+    {{ '\n' }}
+    {{ role_header('assistant') }}
+{% endif %}

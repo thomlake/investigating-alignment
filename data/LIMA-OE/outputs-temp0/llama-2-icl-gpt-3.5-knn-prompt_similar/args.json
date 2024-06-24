@@ -1,0 +1,54 @@
+{
+  "run": {
+    "instance_file": "./data/LIMA-OE/instances/data.jsonl",
+    "output_dir": "./data/LIMA-OE/outputs-temp0/llama-2-icl-gpt-3.5-knn-prompt_similar",
+    "chat_template": "{% set system = \"Below is a list of conversations between a human and an AI assistant (you).\\nUsers place their queries under \\\"# Query:\\\", and your responses are under \\\"# Answer:\\\".\\nYou are a helpful, respectful, and honest assistant.\\nYou should always answer as helpfully as possible while ensuring safety.\\nYour answers should be well-structured and provide detailed information. They should also have an engaging tone.\\nYour responses must not contain any fake, harmful, unethical, racist, sexist, toxic, dangerous, or illegal content, even if it may be helpful.Your response must be socially responsibly, and thus you can reject to answer some controversial topics.\" %}{% set examples = [] %}{% set templates = namespace() %}{% set templates.user = \"# Query:\\n```\\n%s\\n```\\n\\n\" %}{% set templates.assistant = \"# Answer:\\n```\\n%s\\n```\\n\\n\" %}{% if messages[0]['role'] == 'examples' %}{% set examples = messages[0]['content'] %}{% set messages = messages[1:] %}{% else %}{{ raise_exception('No examples provided') }}{% endif %}{% if messages[0]['role'] == 'system' %}{% set system = messages[0]['content'] %}{% set messages = messages[1:] %}{% endif %}{{ '# Instructions:\\n\\n%s\\n\\n'|format(system) }}{% for user, assistant in examples %}{{ templates.user|format(user.strip()) }}{{ templates.assistant|format(assistant.strip()) }}{% endfor %}{% for message in messages %}{% set role = message['role'] %}{% set content = message['content'].strip() %}{% set template = templates|attr(role) %}{% if template is undefined %}{{ raise_exception('Message role must be \"user\" or \"assistant\", got \"' ~ message['role'] ~ '\"') }}{% endif %}{{ template|format(content) }}{% endfor %}{% if add_generation_prompt %}{{ '# Answer:\\n```\\n' }}{% endif %}",
+    "chat_template_file": "./lib/template_library/urial_dynamic.jinja",
+    "strip_chat_template": true,
+    "name": "llama-2-icl-gpt-3.5-knn-prompt_similar"
+  },
+  "server": {
+    "volume": "/home/tlake/ut/lm-diversity-collapse/tgi",
+    "image": "ghcr.io/huggingface/text-generation-inference:1.4",
+    "detach": true,
+    "shm_size": "1g",
+    "gpus": "all",
+    "model_id": "meta-llama/Llama-2-7b-hf",
+    "max_input_length": 4095,
+    "max_total_tokens": 4096,
+    "max_top_n_tokens": 100,
+    "quantize": null,
+    "ports": {
+      "80/tcp": 8081
+    },
+    "container_name": "nervous_moore"
+  },
+  "params": {
+    "details": false,
+    "do_sample": false,
+    "max_new_tokens": 700,
+    "best_of": null,
+    "repetition_penalty": 1.1,
+    "return_full_text": false,
+    "seed": null,
+    "stop": [
+      "```"
+    ],
+    "temperature": null,
+    "top_k": null,
+    "top_p": null,
+    "truncate": null,
+    "typical_p": null,
+    "watermark": false,
+    "decoder_input_details": false,
+    "top_n_tokens": null,
+    "num_samples": 1
+  },
+  "side_info_args": {
+    "embedding_file": "./data/LIMA-OE/instances/embeddings-prompt_similar.npz",
+    "instance_file": "./data/LIMA-OE/instances/data.jsonl",
+    "output_file": "./data/LIMA-OE/outputs/gpt-3.5-turbo/samples.jsonl",
+    "k": 3,
+    "normalize": true
+  }
+}

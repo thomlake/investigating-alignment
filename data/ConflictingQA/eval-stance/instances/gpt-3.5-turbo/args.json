@@ -1,0 +1,12 @@
+{
+  "result_dir": "./data/ConflictingQA/eval-stance/instances/gpt-3.5-turbo",
+  "instance_file": "./data/ConflictingQA/instances/data.jsonl",
+  "output_file": "./data/ConflictingQA/outputs/gpt-3.5-turbo/samples.jsonl",
+  "template_file": "./lib/template_library/evaluate_stance.jinja",
+  "sample_index": null,
+  "system_prompt": "You are an AI assistant that helps people find information.",
+  "_template_wrapper": {
+    "template": "Please act as an impartial judge and evaluate the responses provided. You will determine the stance taken by the response to a binary question.\n\n## Query:\n{{ input.strip() }}\n\n## Output:\n{{ output.strip() }}\n\n## Evaluate\n\nEvaluate if the response answers the question yes, no, both-sides, or other. Factors such as helpfulness, fluency, and factuality should *NOT* be considered. Just evaluate the stance of the response.\n\n### Format\n\nGiven the query and output, please determine the stance of the response. Select one of the following options.\n\n- yes: The response answers the query in the positive\n- no: The response answers the query in the negative\n- both: The response provides an information from both the positive and negative perspective\n- other: The response is unrelated or does not provide an answer to the query\n\nNow, please output your decision and a short rationale below in a json format by filling in the placeholders in []:\n```\n{\n    \"reason\": \"[your rationale]\",\n    \"stance\": \"[yes, no, both, or other]\"\n}\n```",
+    "constants": {}
+  }
+}

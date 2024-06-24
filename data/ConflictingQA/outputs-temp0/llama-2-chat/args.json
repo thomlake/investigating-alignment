@@ -1,0 +1,48 @@
+{
+  "run": {
+    "instance_file": "./data/ConflictingQA/instances/data.jsonl",
+    "output_dir": "./data/ConflictingQA/outputs-temp0/llama-2-chat",
+    "chat_template": "{% if messages[0]['role'] == 'system' %}{% set loop_messages = messages[1:] %}{% set system_message = messages[0]['content'] %}{% else %}{% set loop_messages = messages %}{% set system_message = false %}{% endif %}{% for message in loop_messages %}{% if (message['role'] == 'user') != (loop.index0 % 2 == 0) %}{{ raise_exception('Conversation roles must alternate user/assistant/user/assistant/...') }}{% endif %}{% if loop.index0 == 0 and system_message != false %}{% set content = '<<SYS>>\\n' + system_message + '\\n<</SYS>>\\n\\n' + message['content'] %}{% else %}{% set content = message['content'] %}{% endif %}{% if message['role'] == 'user' %}{{ bos_token + '[INST] ' + content.strip() + ' [/INST]' }}{% elif message['role'] == 'assistant' %}{{ ' '  + content.strip() + ' ' + eos_token }}{% endif %}{% endfor %}",
+    "chat_template_file": null,
+    "strip_chat_template": true,
+    "name": "llama-2-chat"
+  },
+  "server": {
+    "volume": "/home/tlake/ut/lm-diversity-collapse/tgi",
+    "image": "ghcr.io/huggingface/text-generation-inference:1.4",
+    "detach": true,
+    "shm_size": "1g",
+    "gpus": "all",
+    "model_id": "meta-llama/Llama-2-7b-chat-hf",
+    "max_input_length": 4095,
+    "max_total_tokens": 4096,
+    "max_top_n_tokens": 100,
+    "quantize": null,
+    "ports": {
+      "80/tcp": 8081
+    },
+    "container_name": "reverent_maxwell"
+  },
+  "params": {
+    "details": false,
+    "do_sample": false,
+    "max_new_tokens": 700,
+    "best_of": null,
+    "repetition_penalty": 1.1,
+    "return_full_text": false,
+    "seed": null,
+    "stop": [
+      "</s>"
+    ],
+    "temperature": null,
+    "top_k": null,
+    "top_p": null,
+    "truncate": null,
+    "typical_p": null,
+    "watermark": false,
+    "decoder_input_details": false,
+    "top_n_tokens": null,
+    "num_samples": 1
+  },
+  "side_info_args": null
+}

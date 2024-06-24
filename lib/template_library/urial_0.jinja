@@ -1,0 +1,20 @@
+{% set templates = namespace() %}
+{% set templates.user = "# Query:\n```\n%s\n```\n\n" %}
+{% set templates.assistant = "# Answer:\n```\n%s\n```\n\n" %}
+{% if messages[0].role == 'system' %}
+    {% set system = messages[0]['content'] %}
+    {% set messages = messages[1:] %}
+    {{ '# Instructions:\n\n%s\n\n'|format(system) }}
+{% endif %}
+{% for message in messages %}
+    {% set role = message['role'] %}
+    {% set content = message['content'].strip() %}
+    {% set template = templates|attr(role) %}
+    {% if template is undefined %}
+        {{ raise_exception('Message role must be "user" or "assistant", got "' ~ message['role'] ~ '"') }}
+    {% endif %}
+    {{ template|format(content) }}
+{% endfor %}
+{% if add_generation_prompt %}
+    {{ '# Answer:\n```\n' }}
+{% endif %}

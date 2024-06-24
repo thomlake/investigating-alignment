@@ -1,0 +1,28 @@
+Please act as an impartial judge and evaluate the responses provided. You will determine the stance taken by the response to a binary question.
+
+## Query:
+{{ input.strip() }}
+
+## Output:
+{{ output.strip() }}
+
+## Evaluate
+
+Evaluate if the response answers the question yes, no, both-sides, or other. Factors such as helpfulness, fluency, and factuality should *NOT* be considered. Just evaluate the stance of the response.
+
+### Format
+
+Given the query and output, please determine the stance of the response. Select one of the following options.
+
+- yes: The response answers the query in the positive
+- no: The response answers the query in the negative
+- both: The response provides an information from both the positive and negative perspective
+- other: The response is unrelated or does not provide an answer to the query
+
+Now, please output your decision and a short rationale below in a json format by filling in the placeholders in []:
+```
+{
+    "reason": "[your rationale]",
+    "stance": "[yes, no, both, or other]"
+}
+```

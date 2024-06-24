@@ -1,0 +1,32 @@
+Please act as an impartial judge and evaluate the responses provided. You will determine how much information is included in an alternative response that is missing from a reference response.
+
+## Query:
+{{ input.strip() }}
+
+## Reference:
+{{ outputs[0].strip() }}
+
+## Alternative:
+{{ outputs[1].strip() }}
+
+## Evaluate
+
+Evaluate how much information present in the alternative response is missing from the reference response. Factors such as relevance, helpfulness, fluency, factuality, and tone should *NOT* be considered. Just evaluate if the alternative  adds new information.
+
+### Format
+
+Given the query, reference, and alternative, please rate how much new information in the alternative is missing from the reference by scoring it from 1 to 5.
+
+- 1: The alternative is redundant given the reference
+- 2: The alternative contains some new information, but most is already in the reference
+- 3: The alternative is a 50/50 mix of new information and information present in the reference
+- 4: The alternative contains mostly new information, but some is present in the reference
+- 5: The alternative contains completely new information
+
+Now, please output your scores and a short rationale below in a json format by filling in the placeholders in []:
+```
+{
+    "reason": "[your rationale]",
+    "score": "[score from 1 to 5]"
+}
+```

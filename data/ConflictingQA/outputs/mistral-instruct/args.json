@@ -1,0 +1,48 @@
+{
+  "run": {
+    "instance_file": "./data/ConflictingQA/instances/data.jsonl",
+    "output_dir": "./data/ConflictingQA/outputs/mistral-instruct",
+    "chat_template": "{{ bos_token }}{% for message in messages %}{% if (message['role'] == 'user') != (loop.index0 % 2 == 0) %}{{ raise_exception('Conversation roles must alternate user/assistant/user/assistant/...') }}{% endif %}{% if message['role'] == 'user' %}{{ '[INST] ' + message['content'] + ' [/INST]' }}{% elif message['role'] == 'assistant' %}{{ message['content'] + eos_token}}{% else %}{{ raise_exception('Only user and assistant roles are supported!') }}{% endif %}{% endfor %}",
+    "chat_template_file": null,
+    "strip_chat_template": true,
+    "name": "mistral-instruct"
+  },
+  "server": {
+    "volume": "/home/tlake/ut/lm-diversity-collapse/tgi",
+    "image": "ghcr.io/huggingface/text-generation-inference:1.4",
+    "detach": true,
+    "shm_size": "1g",
+    "gpus": "all",
+    "model_id": "mistralai/Mistral-7B-Instruct-v0.2",
+    "max_input_length": 4095,
+    "max_total_tokens": 4096,
+    "max_top_n_tokens": 100,
+    "quantize": null,
+    "ports": {
+      "80/tcp": 8081
+    },
+    "container_name": "friendly_austin"
+  },
+  "params": {
+    "details": false,
+    "do_sample": true,
+    "max_new_tokens": 700,
+    "best_of": null,
+    "repetition_penalty": 1.1,
+    "return_full_text": false,
+    "seed": null,
+    "stop": [
+      "</s>"
+    ],
+    "temperature": 0.5,
+    "top_k": null,
+    "top_p": null,
+    "truncate": null,
+    "typical_p": null,
+    "watermark": false,
+    "decoder_input_details": false,
+    "top_n_tokens": null,
+    "num_samples": 5
+  },
+  "side_info_args": null
+}

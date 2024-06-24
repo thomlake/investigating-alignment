@@ -1,0 +1,13 @@
+{
+  "run": {
+    "instance_file": "./data/ConflictingQA/instances/data.jsonl",
+    "output_dir": "./data/ConflictingQA/outputs-temp0/gpt-3.5-turbo"
+  },
+  "openai_params": {
+    "model": "gpt-3.5-turbo-0613",
+    "temperature": 0,
+    "response_format": null,
+    "n": 1,
+    "max_tokens": 700
+  }
+}

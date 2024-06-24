@@ -1,0 +1,13 @@
+{
+  "run": {
+    "instance_file": "./data/LIMA-test-manual-50/eval-missing/instances/ref_llama-2-chat--alt_llama-2-icl/data.jsonl",
+    "output_dir": "./data/LIMA-test-manual-50/eval-missing/outputs/ref_llama-2-chat--alt_llama-2-icl"
+  },
+  "openai_params": {
+    "model": "gpt-4-1106-preview",
+    "temperature": 0,
+    "response_format": "json_object",
+    "n": 1,
+    "max_tokens": 1024
+  }
+}

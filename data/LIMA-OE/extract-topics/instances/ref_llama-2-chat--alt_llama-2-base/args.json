@@ -1,0 +1,14 @@
+{
+  "output_dir": "./data/LIMA-test-manual-50/extract-topics/instances/ref_llama-2-chat--alt_llama-2-base",
+  "instance_file": "./data/LIMA-test-manual-50/instances/no-context/data.jsonl",
+  "model_file_1": "./data/LIMA-test-manual-50/outputs/llama-2-chat-no-context/samples.jsonl",
+  "model_file_2": "./data/LIMA-test-manual-50/outputs/llama-2-base-no-context/samples.jsonl",
+  "template_file": "./lib/template_library/extract_topics_two.jinja",
+  "sample_index_1": 0,
+  "sample_index_2": null,
+  "system_prompt": "You are an AI assistant that helps people find information.",
+  "_template_wrapper": {
+    "template": "Please act as an impartial judge and evaluate the pair of responses provided. You will determine the topics in the responses and rate how helpful the content on each topic is.\n\n## Query:\n{{ input.strip() }}\n\n## Response A:\n{{ outputs[0].strip() }}\n\n## Response B:\n{{ outputs[1].strip() }}\n\n## Evaluate\n\nDetermine the topics, themes, or high-level ideas contained in the responses. For each topic, identify the response it is from (\"A\", \"B\", or \"both\") and give it a score based on the helpfulness of the content provided on this topic.\n\n### Helpfulness\n\nRate each response topic based on how well it addresses the user's query and provides a relevant solution. A score of 5 indicates the content provided on this content fully aids the user, while a 1 suggests it offers little to no help.\n\n### Format\n\nGiven the query, please identify the topics discussed in the responses and the helpfulness of the associated content.\n\nNow, please output your list of topics and scores along with a short rationale below in a json format by filling in the placeholders in []:\n```\n{\n    \"reason\": \"[your rationale]\",\n    \"topics\": [\n        {\"name\": \"[short name]\", \"response\": \"[A, B, or both]\", \"helpfulness\": \"[score from 1 to 5]\"},\n        ...\n    ]\n}\n```",
+    "constants": {}
+  }
+}

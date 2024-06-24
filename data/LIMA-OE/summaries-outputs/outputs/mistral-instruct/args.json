@@ -1,0 +1,16 @@
+{
+  "run": {
+    "instance_file": "./data/LIMA-OE/summaries-outputs/instances/mistral-instruct/data.jsonl",
+    "output_dir": "./data/LIMA-OE/summaries-outputs/outputs/mistral-instruct",
+    "user_template_file": null,
+    "user_template": null
+  },
+  "openai_params": {
+    "model": "gpt-4-1106-preview",
+    "temperature": 0,
+    "response_format": null,
+    "n": 1,
+    "max_tokens": 256
+  },
+  "side_info_args": null
+}

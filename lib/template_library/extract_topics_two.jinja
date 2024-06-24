@@ -1,0 +1,33 @@
+Please act as an impartial judge and evaluate the pair of responses provided. You will determine the topics in the responses and rate how helpful the content on each topic is.
+
+## Query:
+{{ input.strip() }}
+
+## Response A:
+{{ outputs[0].strip() }}
+
+## Response B:
+{{ outputs[1].strip() }}
+
+## Evaluate
+
+Determine the topics, themes, or high-level ideas contained in the responses. For each topic, identify the response it is from ("A", "B", or "both") and give it a score based on the helpfulness of the content provided on this topic.
+
+### Helpfulness
+
+Rate each response topic based on how well it addresses the user's query and provides a relevant solution. A score of 5 indicates the content provided on this content fully aids the user, while a 1 suggests it offers little to no help.
+
+### Format
+
+Given the query, please identify the topics discussed in the responses and the helpfulness of the associated content.
+
+Now, please output your list of topics and scores along with a short rationale below in a json format by filling in the placeholders in []:
+```
+{
+    "reason": "[your rationale]",
+    "topics": [
+        {"name": "[short name]", "response": "[A, B, or both]", "helpfulness": "[score from 1 to 5]"},
+        ...
+    ]
+}
+```

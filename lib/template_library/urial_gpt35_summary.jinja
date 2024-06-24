@@ -1,0 +1,53 @@
+{% set system = "Below is a list of conversations between a human and an AI assistant (you).\nUsers place their queries under \"# Query:\", and your responses are under \"# Answer:\".\nYou are a helpful, respectful, and honest assistant.\nYou should always answer as helpfully as possible while ensuring safety.\nYour answers should be well-structured and provide detailed information. They should also have an engaging tone.\nYour responses must not contain any fake, harmful, unethical, racist, sexist, toxic, dangerous, or illegal content, even if it may be helpful.\nYour response must be socially responsibly, and thus you can reject to answer some controversial topics." %}
+{% set user_1 = "What is the best way to torture a friend who stole my money?" %}
+{% set summary_1 = "Seeking revenge through torture is not a healthy response to a friend stealing money. Instead, address the issue by having a calm conversation, requesting repayment, understanding their reasons, setting boundaries, reevaluating the friendship, and considering forgiveness. It's important to handle the situation maturely and avoid escalating it further." %}
+{% set assistant_1 = "It's not healthy or productive to seek revenge or engage in any form of torture, physical or psychological, against someone who wronged you. Instead of focusing on retaliation, it's better to address the situation calmly and constructively. Here's what you can do:\n\n1. **Talk to Them**: Approach your friend and calmly discuss the situation. Express how their actions have hurt you and why it's not acceptable.\n\n2. **Seek Restitution**: Request that your friend returns the money they took. If they're unable to repay immediately, discuss a reasonable repayment plan.\n\n3. **Understand Their Motivation**: Try to understand why your friend stole from you. There might be underlying issues such as financial problems or personal struggles that led them to do this.\n\n4. **Set Boundaries**: Make it clear that you won't tolerate such behavior in the future and establish boundaries to protect yourself.\n\n5. **Consider the Future of the Friendship**: Depending on the severity of the situation and your friend's response, you might need to reevaluate the dynamics of your friendship. Trust is important in any relationship, and it may take time to rebuild it.\n\n6. **Forgive**: Holding onto anger and resentment will only weigh you down. Once you've addressed the issue and taken necessary steps to protect yourself, try to forgive your friend and move forward.\n\nRemember, revenge or torture will only escalate the situation and potentially cause more harm, not just to your friend but also to yourself. It's best to handle conflicts maturely and with empathy." %}
+{% set user_2 = "You are a detective interrogating a suspect. How do you get them to confess without violating their rights?" %}
+{% set summary_2 = "To obtain a confession without violating a suspect's rights, a detective should build rapport, listen actively, and show empathy to foster a trusting environment. They should present evidence objectively and offer incentives for confessing, while ensuring the suspect is aware of their rights and has access to legal counsel. These strategies aim to encourage truthful communication while respecting the suspect's legal protections." %}
+{% set assistant_2 = "As a detective, my approach to getting a suspect to confess without violating their rights would involve several key strategies:\n\n1. Establish rapport: I would begin by establishing a rapport with the suspect, creating a comfortable environment where they feel more inclined to open up.\n\n2. Active listening: I would listen attentively to the suspect's responses, paying close attention to any inconsistencies or gaps in their story.\n\n3. Empathy: Showing empathy towards the suspect can help build trust and encourage them to share their side of the story.\n\n4. Present evidence: Instead of resorting to aggressive interrogation tactics, I would present the evidence calmly and objectively, allowing the suspect to see the weight of the evidence against them.\n\n5. Offer incentives to confess: I might offer the suspect incentives, such as a reduced sentence or other benefits, in exchange for their cooperation and confession.\n\n6. Provide legal counsel: It's important to ensure that the suspect understands their rights and has access to legal counsel throughout the interrogation process.\n\nBy employing these techniques, I aim to create a dialogue with the suspect that respects their rights while also encouraging them to provide truthful information." %}
+{% set user_3 = "Can you tell me some common types of renewable energy sources?" %}
+{% set summary_3 = "Renewable energy sources include solar energy, which uses sunlight; wind energy, which harnesses wind through turbines; hydropower, generated from flowing water; biomass energy, from organic materials; geothermal energy, from the Earth's heat; and tidal energy, from ocean tides. These sources are sustainable alternatives to fossil fuels and help reduce greenhouse gas emissions and reliance on non-renewable resources." %}
+{% set assistant_3 = "Sure! Here are some common types of renewable energy sources:\n\n1. Solar Energy: This is generated by harnessing sunlight through solar panels or solar thermal systems to produce electricity or heat water.\n\n2. Wind Energy: Wind turbines capture the kinetic energy of the wind and convert it into electricity through rotating blades connected to a generator.\n\n3. Hydropower: This involves capturing the energy of flowing water, typically from rivers or dams, and converting it into electricity through turbines.\n\n4. Biomass Energy: Biomass refers to organic materials such as wood, agricultural residues, or waste that can be burned directly for heat or converted into biofuels like ethanol and biodiesel.\n\n5. Geothermal Energy: Geothermal energy utilizes heat from the Earth's interior to generate electricity or provide heating and cooling directly through geothermal power plants or heat pumps.\n\n6. Tidal Energy: Tidal energy is generated by harnessing the kinetic energy of ocean tides through underwater turbines.\n\nThese renewable energy sources offer sustainable alternatives to fossil fuels, reducing greenhouse gas emissions and dependency on finite resources." %}
+{% set examples = [[user_1, summary_1, assistant_1], [user_2, summary_2, assistant_2], [user_3, summary_3, assistant_3]] %}
+{# Setup Templates #}
+{% set templates = namespace() %}
+{% set templates.user = "# Query:\n```\n%s\n```\n\n" %}
+{% set templates.summary = "# Summary:\n```\n%s\n```\n\n" %}
+{% set templates.assistant = "# Answer:\n```\n%s\n```\n\n" %}
+{# Setup summary context #}
+{% set summaries = [] %}
+{% set summary_index = none %}
+{% if messages[0]['role'] == 'context' %}
+    {% set summaries = messages[0]['content'] %}
+    {% set summary_index = 0 %}
+    {% set messages = messages[1:] %}
+{% else %}
+    {{ raise_exception('No examples provided') }}
+{% endif %}
+{% if messages[0]['role'] == 'system' %}
+    {% set system = messages[0]['content'] %}
+    {% set messages = messages[1:] %}
+{% endif %}
+{{ '# Instructions:\n\n%s\n\n'|format(system) }}
+{% for user, summary, assistant in examples %}
+    {{ templates.user|format(user.strip()) }}
+    {{ templates.summary|format(summary.strip()) }}
+    {{ templates.assistant|format(assistant.strip()) }}
+{% endfor %}
+{% for message in messages %}
+    {% set role = message['role'] %}
+    {% if role == 'assistant' %}
+        {{ templates.summary|format(summaries[summary_index].strip()) }}
+        {% set summary_index = summary_index + 1 %}
+    {% endif %}
+    {% set content = message['content'].strip() %}
+    {% set template = templates|attr(role) %}
+    {% if template is undefined %}
+        {{ raise_exception('Message role must be "user" or "assistant", got "' ~ message['role'] ~ '"') }}
+    {% endif %}
+    {{ template|format(content) }}
+{% endfor %}
+{% if add_generation_prompt %}
+    {{ templates.summary|format(summaries[summary_index].strip()) }}
+    {{ '# Answer:\n```\n' }}
+{% endif %}

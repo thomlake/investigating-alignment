@@ -1,0 +1,4 @@
+{% if messages|length != 1 %}
+    {{ raise_exception('Verbatim template only supports a single message') }}
+{% endif %}
+{{ messages[0]['content'].strip() }}

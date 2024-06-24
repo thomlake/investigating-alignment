@@ -1,0 +1,14 @@
+{
+  "output_dir": "./data/LIMA-test-manual-50/eval-missing/instances/ref_llama-2-chat--alt_llama-2-icl",
+  "instance_file": "./data/LIMA-test-manual-50/instances/no-context/data.jsonl",
+  "model_file_1": "./data/LIMA-test-manual-50/outputs/llama-2-chat-no-context/samples.jsonl",
+  "model_file_2": "./data/LIMA-test-manual-50/outputs/llama-2-icl-no-context/samples.jsonl",
+  "template_file": "./lib/template_library/evaluate_missing.jinja",
+  "sample_index_1": 0,
+  "sample_index_2": null,
+  "system_prompt": "You are an AI assistant that helps people find information.",
+  "_template_wrapper": {
+    "template": "Please act as an impartial judge and evaluate the responses provided. You will determine how much information is included in an alternative response that is missing from a reference response.\n\n## Query:\n{{ input.strip() }}\n\n## Reference:\n{{ outputs[0].strip() }}\n\n## Alternative:\n{{ outputs[1].strip() }}\n\n## Evaluate\n\nEvaluate how much information present in the alternative response is missing from the reference response. Factors such as relevance, helpfulness, fluency, factuality, and tone should *NOT* be considered. Just evaluate if the alternative  adds new information.\n\n### Format\n\nGiven the query, reference, and alternative, please rate how much new information in the alternative is missing from the reference by scoring it from 1 to 5.\n\n- 1: The alternative is redundant given the reference\n- 2: The alternative contains some new information, but most is already in the reference\n- 3: The alternative is a 50/50 mix of new information and information present in the reference\n- 4: The alternative contains mostly new information, but some is present in the reference\n- 5: The alternative contains completely new information\n\nNow, please output your scores and a short rationale below in a json format by filling in the placeholders in []:\n```\n{\n    \"reason\": \"[your rationale]\",\n    \"score\": \"[score from 1 to 5]\"\n}\n```",
+    "constants": {}
+  }
+}

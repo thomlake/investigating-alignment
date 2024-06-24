@@ -1,0 +1,13 @@
+{
+  "run": {
+    "instance_file": "./data/ConflictingQA/eval-stance/instances/llama-2-icl-chat/data.jsonl",
+    "output_dir": "./data/ConflictingQA/eval-stance/outputs/llama-2-icl-chat"
+  },
+  "openai_params": {
+    "model": "gpt-4-1106-preview",
+    "temperature": 0,
+    "response_format": "json_object",
+    "n": 1,
+    "max_tokens": 1024
+  }
+}

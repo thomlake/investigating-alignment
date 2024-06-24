@@ -1,0 +1,48 @@
+{
+  "run": {
+    "instance_file": "./data/ConflictingQA/instances/data.jsonl",
+    "output_dir": "./data/ConflictingQA/outputs/mistral",
+    "chat_template": "{% set templates = namespace() %}{% set templates.user = \"# Query:\\n```\\n%s\\n```\\n\\n\" %}{% set templates.assistant = \"# Answer:\\n```\\n%s\\n```\\n\\n\" %}{% if messages[0].role == 'system' %}{% set system = messages[0]['content'] %}{% set messages = messages[1:] %}{{ '# Instructions:\\n\\n%s\\n\\n'|format(system) }}{% endif %}{% for message in messages %}{% set role = message['role'] %}{% set content = message['content'].strip() %}{% set template = templates|attr(role) %}{% if template is undefined %}{{ raise_exception('Message role must be \"user\" or \"assistant\", got \"' ~ message['role'] ~ '\"') }}{% endif %}{{ template|format(content) }}{% endfor %}{% if add_generation_prompt %}{{ '# Answer:\\n```\\n' }}{% endif %}",
+    "chat_template_file": "./lib/template_library/urial_0.jinja",
+    "strip_chat_template": true,
+    "name": "mistral"
+  },
+  "server": {
+    "volume": "/home/tlake/ut/lm-diversity-collapse/tgi",
+    "image": "ghcr.io/huggingface/text-generation-inference:1.4",
+    "detach": true,
+    "shm_size": "1g",
+    "gpus": "all",
+    "model_id": "mistralai/Mistral-7B-v0.1",
+    "max_input_length": 4095,
+    "max_total_tokens": 4096,
+    "max_top_n_tokens": 100,
+    "quantize": null,
+    "ports": {
+      "80/tcp": 8081
+    },
+    "container_name": "mystifying_ptolemy3"
+  },
+  "params": {
+    "details": false,
+    "do_sample": true,
+    "max_new_tokens": 700,
+    "best_of": null,
+    "repetition_penalty": 1.1,
+    "return_full_text": false,
+    "seed": null,
+    "stop": [
+      "```"
+    ],
+    "temperature": 0.5,
+    "top_k": null,
+    "top_p": null,
+    "truncate": null,
+    "typical_p": null,
+    "watermark": false,
+    "decoder_input_details": false,
+    "top_n_tokens": null,
+    "num_samples": 5
+  },
+  "side_info_args": null
+}

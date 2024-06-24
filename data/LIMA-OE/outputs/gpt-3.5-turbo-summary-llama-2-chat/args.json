@@ -1,0 +1,21 @@
+{
+  "run": {
+    "instance_file": "./data/LIMA-OE/instances/data.jsonl",
+    "output_dir": "./data/LIMA-OE/outputs/gpt-3.5-turbo-summary-llama-2-chat",
+    "user_template_file": "./lib/template_library/answer_with_summary.jinja",
+    "user_template": {
+      "template": "You will be provided a query or request and a answer summary. Given this information, your task is to transform the answer summary into a complete answer.\n\n## Question:\n\n{{ input.strip() }}\n\n## Answer Summary:\n\n{{ context[0].strip() }}\n\n## Task:\n\nNow, please output a full response based on the summary.",
+      "constants": {}
+    }
+  },
+  "openai_params": {
+    "model": "gpt-3.5-turbo-0613",
+    "temperature": 0.5,
+    "response_format": null,
+    "n": 5,
+    "max_tokens": 700
+  },
+  "side_info_args": {
+    "summary_file": "./data/LIMA-OE/summaries-outputs/outputs/llama-2-chat/samples.jsonl"
+  }
+}

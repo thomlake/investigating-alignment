@@ -1,0 +1,12 @@
+{
+  "result_dir": "./data/LIMA-OE/summaries-outputs-temp0/instances/llama-2-chat",
+  "instance_file": "./data/LIMA-OE/instances/data.jsonl",
+  "output_file": "./data/LIMA-OE/outputs-temp0/llama-2-chat/samples.jsonl",
+  "template_file": "./lib/template_library/summarize_response.jinja",
+  "sample_index": 0,
+  "system_prompt": "You are an AI assistant that helps people find information.",
+  "_template_wrapper": {
+    "template": "You will be provided a question and answer. Your task is to summarize the answer.\n\n## Question:\n\n{{ input.strip() }}\n\n## Answer:\n\n{{ output.strip() }}\n\n## Instructions:\n\nNow, please write a short 2-3 sentence summary of the provided answer. Include all important information and details that would be needed for someone to write a similar answer relying just on the information in the summary. Do **NOT** include any direct quotes.",
+    "constants": {}
+  }
+}

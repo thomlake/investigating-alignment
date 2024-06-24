@@ -1,0 +1,25 @@
+Please help me identify the topics and themes in the responses provided.
+
+{% for completion in completions -%}
+## Response {{ loop.index }}:
+{{ completion }}
+
+{% endfor -%}
+
+## Topics
+
+For each response you will output a short list of topics. Each topic should be one or two words. Please use consistent terminology so that responses that share topics are easily identified.
+
+### Format
+
+Now, please output the topics and a short rationale below in a json format by filling in the placeholders marked with $:
+```
+{
+{% for _ in completions %}
+    "response {{ loop.index }}": {
+        "reason": "$YOUR_RATIONALE",
+        "output": ["$TOPIC_1", "$TOPIC_2", ...]
+    }{{"," if not loop.last else "" }}
+{% endfor %}
+}
+```

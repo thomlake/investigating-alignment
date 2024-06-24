@@ -1,0 +1,16 @@
+{
+  "run": {
+    "instance_file": "./data/LIMA-OE/eval-quality/instances/llama-2-icl-gpt-3.5-summary/data.jsonl",
+    "output_dir": "./data/LIMA-OE/eval-quality/outputs/llama-2-icl-gpt-3.5-summary",
+    "user_template_file": null,
+    "user_template": null
+  },
+  "openai_params": {
+    "model": "gpt-4-1106-preview",
+    "temperature": 0,
+    "response_format": "json_object",
+    "n": 1,
+    "max_tokens": 1024
+  },
+  "side_info_args": null
+}

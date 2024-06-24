@@ -1,0 +1,14 @@
+{
+  "run": {
+    "instance_file": "./data/LIMA-OE/summaries-outputs-temp0/instances/gpt-3.5-turbo/data.jsonl",
+    "output_dir": "./data/LIMA-OE/summaries-outputs-temp0/outputs/gpt-3.5-turbo"
+  },
+  "openai_params": {
+    "model": "gpt-4-1106-preview",
+    "temperature": 0,
+    "response_format": null,
+    "n": 1,
+    "max_tokens": 256
+  },
+  "side_info_args": null
+}
